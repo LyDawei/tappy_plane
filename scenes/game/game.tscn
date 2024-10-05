@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://1vt7cu4lnyhd"]
+
+[ext_resource type="Texture2D" uid="uid://b2bxtnmppps2w" path="res://assets/background/rocks_2.png" id="1_fk2gq"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_ox708"]
+[ext_resource type="LabelSettings" uid="uid://bxa1yw84a5rke" path="res://assets/styles/highscore_label_style.tres" id="2_hejgv"]
+[ext_resource type="PackedScene" uid="uid://c7x8qe2s8h3da" path="res://scenes/plane/plane.tscn" id="2_vbxfi"]
+[ext_resource type="PackedScene" uid="uid://diluhwf7el6n8" path="res://scenes/barrier/barrier.tscn" id="3_isb76"]
+[ext_resource type="PackedScene" uid="uid://c3bh5glxjle31" path="res://scenes/gameover/game_over.tscn" id="5_x8hcb"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_ox708")
+
+[node name="GameOverCanvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="GameOver" parent="GameOverCanvas" instance=ExtResource("5_x8hcb")]
+
+[node name="background" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(758, 426.61)
+scale = Vector2(0.789815, 0.789815)
+texture = ExtResource("1_fk2gq")
+
+[node name="plane" parent="." instance=ExtResource("2_vbxfi")]
+position = Vector2(58, 387)
+
+[node name="ceiling" parent="." instance=ExtResource("3_isb76")]
+position = Vector2(240, -5)
+
+[node name="floor" parent="." instance=ExtResource("3_isb76")]
+position = Vector2(240, 856)
+
+[node name="SpawnPointA" type="Marker2D" parent="."]
+position = Vector2(578, 111)
+
+[node name="SpawnPointB" type="Marker2D" parent="."]
+position = Vector2(578, 734)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 1.2
+autostart = true
+
+[node name="PipesHolder" type="Node" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 3
+offset_left = 12.0
+offset_top = 16.0
+offset_right = 35.0
+offset_bottom = 53.0
+size_flags_horizontal = 8
+text = "0"
+label_settings = ExtResource("2_hejgv")
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

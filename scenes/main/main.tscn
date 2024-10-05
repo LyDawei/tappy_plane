@@ -1,0 +1,139 @@
+[gd_scene load_steps=12 format=3 uid="uid://ba16807nkmn18"]
+
+[ext_resource type="Texture2D" uid="uid://dpmomwq4o63c3" path="res://assets/background/sky.png" id="1_lqr6u"]
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_xmbvx"]
+[ext_resource type="FontFile" uid="uid://6q05q4blccq2" path="res://assets/fonts/LuckiestGuy-Regular.ttf" id="2_hd6a8"]
+[ext_resource type="FontFile" uid="uid://ci5yv0tlngiwf" path="res://assets/fonts/gemunu-libre-v8-latin-700.ttf" id="3_f4ogi"]
+[ext_resource type="LabelSettings" uid="uid://k83yt8ky5g00" path="res://assets/styles/title_label_style.tres" id="5_87qpf"]
+[ext_resource type="AudioStream" uid="uid://bvbq2y5dmpej8" path="res://assets/audio/bgm_menu.mp3" id="5_w304l"]
+[ext_resource type="LabelSettings" uid="uid://d2kscmsw3qdoy" path="res://assets/styles/prompt_label_styles.tres" id="7_mnkbu"]
+[ext_resource type="LabelSettings" uid="uid://bxa1yw84a5rke" path="res://assets/styles/highscore_label_style.tres" id="8_4lgig"]
+
+[sub_resource type="Animation" id="Animation_n27ur"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dpjsb"]
+resource_name = "flash"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0.0625001)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ktcog"]
+_data = {
+"RESET": SubResource("Animation_n27ur"),
+"flash": SubResource("Animation_dpjsb")
+}
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_xmbvx")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_w304l")
+autoplay = true
+
+[node name="Sky" type="Sprite2D" parent="."]
+position = Vector2(239.25, 426)
+scale = Vector2(0.24974, 0.788889)
+texture = ExtResource("1_lqr6u")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 86.0
+offset_right = 466.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="MarginContainer"]
+texture_filter = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 0.383998, 0.427893, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_hd6a8")
+theme_override_font_sizes/font_size = 42
+text = "Tappy Plane"
+label_settings = ExtResource("5_87qpf")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Prompt" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.879256, 0.530741, 0.600735, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f4ogi")
+theme_override_font_sizes/font_size = 42
+text = "Press Space to Play"
+label_settings = ExtResource("7_mnkbu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/Prompt"]
+libraries = {
+"": SubResource("AnimationLibrary_ktcog")
+}
+autoplay = "flash"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+split_offset = 420
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.384314, 0.427451, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f4ogi")
+theme_override_font_sizes/font_size = 36
+text = "High Score"
+label_settings = ExtResource("8_4lgig")
+
+[node name="Score" type="Label" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.384314, 0.427451, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f4ogi")
+theme_override_font_sizes/font_size = 36
+text = "0"
+label_settings = ExtResource("8_4lgig")

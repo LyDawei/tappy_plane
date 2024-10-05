@@ -1,0 +1,3 @@
+extends Node
+signal on_plane_died
+signal try_again_label_is_visible
